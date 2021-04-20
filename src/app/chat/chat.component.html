@@ -1,0 +1,43 @@
+<div class="card mx-4 my-4" style="width: 400px;">
+    <div class="card-header" style="background-color: brown;">
+        <ul class="nav nav-pills card-header-pills">
+            <li *ngIf="!conectado" class="nav-item mr-2">
+                <input type="text" [(ngModel)]="mensaje.username" class="fomr-control" placeholder="Tu username..." name="username">
+            </li>
+            <li class="nav-item mr-2">
+                <button [disabled]="!mensaje.username" *ngIf="!conectado" (click)="conectar()" class="btn btn-success">Conectar</button>
+            </li>
+            <li class="nav-item">
+                <button *ngIf="conectado" (click)="desconectar()" class="btn btn-warning">Cerrar Chat</button>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body" #scrollchat [scrollTop]="scrollchat.scrollHeight" *ngIf="conectado" style="overflow-y: scroll; height: 360px;background-color: brown; ">
+        <ul class="list-group list-group-flush" >
+            <li style="background-color: black; border:1px solid brown; " class="list-group-item list-group-item-light" *ngFor="let mensaje of mensajes">
+
+               <span  *ngIf="mensaje.tipo=='USERNAME'" > {{mensaje.fecha | date:'shortTime'}}: Nuevo usuario : 
+                  <span [ngStyle]="{'color':mensaje.color}">@{{mensaje.username}}</span>
+               </span>
+            
+              <span  *ngIf="mensaje.tipo=='MENSAJE'"> {{mensaje.fecha | date:'shortTime'}} 
+                  <span [ngStyle]="{'color':mensaje.color}">@{{mensaje.username}}</span> 
+              dice: <br>{{mensaje.texto}}</span> 
+
+              <span *ngIf="mensaje.tipo=='DESCONECTADO'" [ngStyle]="{'color':mensaje.color}">{{mensaje.texto}}</span>
+            </li>
+        </ul>
+    </div>
+    <div class="card-footer" *ngIf="conectado" style="background-color: brown;">
+        <form  class="form-inline">
+            <div class="form-group mx-3">
+                <input type="text" [(ngModel)]="mensaje.texto" (keyup)="escribiendo()" class="form-control" placeholder="Escribe un mensaje...." name="texto">
+            </div>
+            <button class="btn btn-primary" type="submit"   (click)="enviarMensaje()">Enviar</button>
+        </form>
+        <div>{{escribiendop}}</div>
+    </div>
+
+
+
+</div>
